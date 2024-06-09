@@ -6,8 +6,9 @@
 
 #define IR_QTY 8
 #define READ_NUM_OF_TIME 1000
-#define DIR_MOVING_AVE_NUM 2
-#define DIS_MOVING_AVE_NUM 5
+#define DIR_MOVING_AVE_NUM 15
+#define DIS_MOVING_AVE_NUM 25
+#define RC 0.5
 
 class Ir {
      public:
@@ -24,6 +25,7 @@ class Ir {
       float unit_vector_y[IR_QTY];
       uint8_t ir[IR_QTY];
       uint16_t val[IR_QTY];
+      uint16_t rc_val[IR_QTY];
       int16_t result_vector_x, result_vector_y;
       int16_t dir, dis;
 };

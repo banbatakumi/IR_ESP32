@@ -4,7 +4,7 @@
 #include "Arduino.h"
 #include "moving_ave.h"
 
-#define MOVING_AVE_NUM 5
+#define MOVING_AVE_NUM 10
 #define PWM_FREQ 60000
 #define PWM_RESOLUTION 8
 

@@ -20,6 +20,6 @@ void Motor::Run(int16_t power_) {
             ledcWrite(1, 0);
       } else {
             ledcWrite(0, 0);
-            ledcWrite(1, power);
+            ledcWrite(1, power * -1);
       }
 }

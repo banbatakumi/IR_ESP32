@@ -31,9 +31,9 @@ void Ir::Read() {
       result_vector_y = 0;
       for (uint8_t i = 0; i < IR_QTY; i++) {
             val[i] = (READ_NUM_OF_TIME - val[i]) * (100.0f / READ_NUM_OF_TIME);  // 100までに補正
-            val[i] = 100 - val[i];
-            result_vector_x += val[i] * unit_vector_x[i];  // X成分を合成
-            result_vector_y += val[i] * unit_vector_y[i];  // Y成分を合成
+            rc_val[i] = val[i] * (1 - RC) + rc_val[i] * RC;
+            result_vector_x += rc_val[i] * unit_vector_x[i];  // X成分を合成
+            result_vector_y += rc_val[i] * unit_vector_y[i];  // Y成分を合成
       }
 
       dir = atan2(result_vector_y, result_vector_x) / PI * 180.0f;          // 角度を出す
