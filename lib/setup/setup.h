@@ -33,6 +33,7 @@ VectorFloat gravity;  // [x, y, z]            gravity vector
 float ypr[3];         // [yaw, pitch, roll]   yaw/pitch/roll container and gravity vector
 
 float yaw_correction;  // yaw軸の補正値
+bool do_yaw_correction;
 int16_t yaw;
 
 bool is_connect;
@@ -50,5 +51,7 @@ bool is_ally_moving;
 bool is_ally_defense;
 bool is_ally_catch_ball;
 bool can_ally_get_pass;
+
+char pc_command;
 
 #endif
