@@ -15,6 +15,7 @@ Motor::Motor(uint8_t motor_a_, uint8_t motor_b_) {
 void Motor::Run(int16_t power_) {
       int16_t power = power_ * 2.56;
       motorAve.Compute(&power);
+
       if (power > 0) {
             ledcWrite(0, power);
             ledcWrite(1, 0);

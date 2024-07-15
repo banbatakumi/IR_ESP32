@@ -10,6 +10,12 @@ void Core1a_setup() {
 }
 
 void Core1a_loop() {
+      ir.Read();
+      // Serial.print("dir: ");
+      // Serial.print(ir.GetDir());
+      // Serial.print(", dis: ");
+      // Serial.println(ir.GetDis());
+
       // UART送信
       const uint8_t send_byte_num = 6;
       uint8_t send_byte[send_byte_num];
@@ -20,6 +26,7 @@ void Core1a_loop() {
       send_byte[4] = can_ally_get_pass << 4 | is_ally_catch_ball << 3 | is_ally_defense << 2 | is_ally_moving << 1 | is_connect;
       send_byte[5] = 0xAA;
       Serial2.write(send_byte, send_byte_num);
+      Serial.flush();
       // Serial2.write(pc_command);
 
       // UART受信

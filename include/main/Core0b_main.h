@@ -45,8 +45,8 @@ void Core0b_setup() {
             Serial.print(devStatus);
             Serial.println(F(")"));
       }
-      motorPID.SelectType(PID_TYPE);
-      motorPID.SetGain(10, 0, 0.75);
+      motorPID.SelectType(PI_D_TYPE);
+      motorPID.SetGain(7.5, 2, 1);
       motorPID.SetILimit(100);
 }
 
@@ -56,8 +56,9 @@ void Core0b_loop() {
             mpu.dmpGetGravity(&gravity, &q);
             mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
             yaw = SimplifyDeg(ypr[0] * 180 / M_PI - yaw_correction);
-            if (do_yaw_correction) yaw_correction += yaw;
+            //if (do_yaw_correction) yaw_correction += yaw;
       }
+      Serial.println(yaw);
 
       if (do_rorate) {
             int16_t power;
@@ -67,6 +68,7 @@ void Core0b_loop() {
             motor.Run(power);
       } else {
             motor.Run(0);
+            motorPID.ResetPID();
       }
 }
 

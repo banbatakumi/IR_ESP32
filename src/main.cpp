@@ -75,16 +75,15 @@ void setup() {
 
 void loop() {
       const uint32_t control_period = (1.0f) / MAIN_CONTROL_FREQ * 1000000;  // Hz→μsに変換
-      while (1) {
-            uint64_t current_time = micros();  // 現在経過時間を取得
+      // while (1) {
+      //       uint64_t current_time = micros();  // 現在経過時間を取得
 
-            main_loop();
-
-            int32_t extra_time = control_period - (micros() - current_time);  // 処理にかかった時間と余剰時間の差
-            if (extra_time > 0) {
-                  delayMicroseconds(extra_time);
-            } else {
-                  // Serial.println("Core0b processing time exceeded");
-            }
-      }
+      //       int32_t extra_time = control_period - (micros() - current_time);  // 処理にかかった時間と余剰時間の差
+      //       if (extra_time > 0) {
+      //             delayMicroseconds(extra_time);
+      //       } else {
+      //             // Serial.println("Core0b processing time exceeded");
+      //       }
+      // }
+      main_loop();
 }

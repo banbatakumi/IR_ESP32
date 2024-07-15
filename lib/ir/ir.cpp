@@ -10,13 +10,19 @@ Ir::Ir(uint8_t ir_0_, uint8_t ir_1_, uint8_t ir_2_, uint8_t ir_3_, uint8_t ir_4_
       ir[6] = ir_6_;
       ir[7] = ir_7_;
 
-      DirAve.SetLength(DIR_MOVING_AVE_NUM);
-      DisAve.SetLength(DIS_MOVING_AVE_NUM);
+      Ave0.SetLength(MOVING_AVE_NUM);
+      Ave1.SetLength(MOVING_AVE_NUM);
+      Ave2.SetLength(MOVING_AVE_NUM);
+      Ave3.SetLength(MOVING_AVE_NUM);
+      Ave4.SetLength(MOVING_AVE_NUM);
+      Ave5.SetLength(MOVING_AVE_NUM);
+      Ave6.SetLength(MOVING_AVE_NUM);
+      Ave7.SetLength(MOVING_AVE_NUM);
 
       for (uint8_t i = 0; i < 8; i++) pinMode(ir[i], INPUT);
       for (uint8_t i = 0; i < IR_QTY; i++) {  // 各センサに座標を与える
-            unit_vector_x[i] = cos((i * 360.00000 / IR_QTY) * PI / 180.0f);
-            unit_vector_y[i] = sin((i * 360.00000 / IR_QTY) * PI / 180.0f);
+            unit_vector_x[i] = MyCos(i * 360.0f / IR_QTY);
+            unit_vector_y[i] = MySin(i * 360.0f / IR_QTY);
       }
 }
 
@@ -27,6 +33,16 @@ void Ir::Read() {
             for (uint8_t j = 0; j < IR_QTY; j++) val[j] += digitalRead(ir[j]);
       }
 
+      // 移動平均を取る
+      Ave0.Compute(&val[0]);
+      Ave1.Compute(&val[1]);
+      Ave2.Compute(&val[2]);
+      Ave3.Compute(&val[3]);
+      Ave4.Compute(&val[4]);
+      Ave5.Compute(&val[5]);
+      Ave6.Compute(&val[6]);
+      Ave7.Compute(&val[7]);
+
       result_vector_x = 0;
       result_vector_y = 0;
       for (uint8_t i = 0; i < IR_QTY; i++) {
@@ -36,33 +52,9 @@ void Ir::Read() {
             result_vector_y += rc_val[i] * unit_vector_y[i];  // Y成分を合成
       }
 
-      dir = atan2(result_vector_y, result_vector_x) / PI * 180.0f;          // 角度を出す
-      dis = sqrt(pow(result_vector_x, 2) + pow(result_vector_y, 2)) * 1.8;  // 距離を出す
+      dir = MyAtan2(result_vector_y, result_vector_x);                                          // 角度を出す
+      dis = sqrt(result_vector_x * result_vector_x + result_vector_y * result_vector_y) * 1.2;  // 距離を出す
       if (dis > 100) dis = 100;
-
-      // 移動平均を取る
-      DirAve.Compute(&dir);
-      DisAve.Compute(&dis);
-
-      /*
-      Serial.print("dir: ");
-      Serial.print(dir);
-      Serial.print(", 0: ");
-      Serial.print(val[0]);
-      Serial.print(", 1: ");
-      Serial.print(val[1]);
-      Serial.print(", 2: ");
-      Serial.print(val[2]);
-      Serial.print(", 3: ");
-      Serial.print(val[3]);
-      Serial.print(", 4: ");
-      Serial.print(val[4]);
-      Serial.print(", 5: ");
-      Serial.print(val[5]);
-      Serial.print(", 6: ");
-      Serial.print(val[6]);
-      Serial.print(", 7: ");
-      Serial.println(val[7]);*/
 }
 
 int16_t Ir::GetDir() {
